@@ -1,0 +1,220 @@
+body {
+  background: #e6e6e6;
+}
+
+form {
+  margin: 0 auto;
+  width: 98%;
+}
+
+fieldset{
+  margin-top:15px;
+  width: 100%;
+}
+
+legend {
+  font-family: sans-serif;
+  font-size: 90%;
+  color: #fff;
+  font-weight: bold;
+  background: #000;
+  padding: 0.1em 0.5em;
+  border-radius: 4px;
+}
+
+h1 {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+
+
+.control-group-big {
+  display: block;
+  vertical-align: top;
+  background: #fff;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  padding: 5px;
+  width: 99%;
+  margin: 5px;
+}
+
+/* Select Boxes */
+
+.select {
+  position: relative;
+  display: inline-block;
+  width:98%;
+  border: 1px solid #969696;
+  box-shadow: 4px 4px 4px rgba(0,0,0,0.75);
+ 
+  margin: 5px;
+}
+
+.select select {
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  padding: 10px 15px;
+  outline: 0;
+  border: 0;
+  border-radius: 0;
+  background: #e6e6e6;
+  color: #7b7b7b;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.select select::-ms-expand {
+  display: none;
+}
+.select select:hover,
+.select select:focus {
+  color: #000;
+  background: #ccc;
+}
+.select select:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.select__arrow {
+  position: absolute;
+  top: 16px;
+  right: 15px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-style: solid;
+  border-width: 8px 5px 0 5px;
+  border-color: #7b7b7b transparent transparent transparent;
+}
+.select select:hover ~ .select__arrow,
+.select select:focus ~ .select__arrow {
+  border-top-color: #000;
+}
+.select select:disabled ~ .select__arrow {
+  border-top-color: #ccc;
+}
+.select select,
+.select option {
+  font-size: 16px;
+}
+
+/* Text Area */
+
+.notes {
+  background-image: linear-gradient(#EFF2B9, #EFF2B9 23px, #ccc 23px, #ccc 23px, white 23px);
+  background-size: 100% 24px;
+  background-attachment: local;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 24px;
+  font-family: Arial, Helvetica, Sans-serif;
+  font-size: 16px;  
+  scrollbar-width: none;
+  resize: none;
+
+}
+
+textarea {
+  padding: 5px;
+  margin: 5px;
+  width: 98%;
+}
+
+
+/* Check Boxes */
+
+.cbcontainer {
+  display: block;
+}
+.cbcontrol-group {
+  display: block;
+  vertical-align: top;
+  background: #fff;
+  text-align: left;
+  border: 1px solid #969696;
+  box-shadow: 4px 4px 4px rgba(0,0,0,0.75);
+  width: 98%;
+  margin: 5px;
+}
+.cbcontrol {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.cbspan { 
+  font-size: 16px;
+}
+
+.cbcontrol input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.cbcontrol__indicator {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #e6e6e6;
+}
+.cbcontrol--radio .control__indicator {
+  border-radius: 50%;
+}
+.cbcontrol:hover input ~ .cbcontrol__indicator,
+.cbcontrol input:focus ~ .cbcontrol__indicator {
+  background: #ccc;
+}
+.control input:checked ~ .cbcontrol__indicator {
+  background: #2aa1c0;
+}
+.cbcontrol:hover input:not([disabled]):checked ~ .cbcontrol__indicator,
+.cbcontrol input:checked:focus ~ .cbcontrol__indicator {
+  background: #0e647d;
+}
+.cbcontrol input:disabled ~ .cbcontrol__indicator {
+  background: #e6e6e6;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.cbcontrol__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.cbcontrol input:checked ~ .cbcontrol__indicator:after {
+  display: block;
+}
+.cbcontrol--checkbox .cbcontrol__indicator:after {
+  left: 8px;
+  top: 4px;
+  width: 3px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.cbcontrol--checkbox input:disabled ~ .cbcontrol__indicator:after {
+  border-color: #7b7b7b;
+}
+.cbcontrol--radio .cbcontrol__indicator:after {
+  left: 7px;
+  top: 7px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.cbcontrol--radio input:disabled ~ .cbcontrol__indicator:after {
+  background: #7b7b7b;
+}

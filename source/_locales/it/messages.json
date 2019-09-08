@@ -1,0 +1,20 @@
+{
+"appButtonDesc":{"message":"Copylinks++"},
+"appName":{"message":"Copylinks++"},
+"appDesc":{"message":"Copia negli appunti tutti i link dalle pagine"},
+"button":{"message":"Azione del pulsante"},
+"where":{"message":"Copia i link da:"},
+"current":{"message":"Scheda corrente"},
+"alltabs":{"message":"Finestra corrente"},
+"alltabsallwindows":{"message":"Tutte le finestre"},
+"notificationTitle":{"message":"Copylinks++"},
+"notificationMessage":{"message":"Numero"},
+"numb":{"message":"Link copiati"},
+"all":{"message":"Tutti i link"},
+"torrent":{"message":"Link Magnet"},
+"listed":{"message":"Domini in elenco"},
+"listeddom":{"message":"Un dominio per linea"},
+"torrentlisted":{"message":"Link Magnet && Domini in elenco"},
+"filter":{"message":"Tipi di link:"},
+"context":{"message":"Menù contestuale"}
+}

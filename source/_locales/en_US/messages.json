@@ -1,0 +1,20 @@
+{
+"appButtonDesc":{"message":"Copylinks++"},
+"appName":{"message":"Copylinks++"},
+"appDesc":{"message":"Copy to clipboard all links from pages with one click!"},
+"button":{"message":"Button Settings"},
+"where":{"message":"Copy links from:"},
+"current":{"message":"Current Tab"},
+"alltabs":{"message":"Current Window"},
+"alltabsallwindows":{"message":"All Windows"},
+"notificationTitle":{"message":"Copylinks++"},
+"notificationMessage":{"message":"Number"},
+"numb":{"message":"Link(s) copied"},
+"all":{"message":"All links"},
+"torrent":{"message":"Magnet links"},
+"listed":{"message":"Listed Domains"},
+"listeddom":{"message":"Listed Domains - one for line"},
+"torrentlisted":{"message":"Magnet and Listed Domains"},
+"filter":{"message":"Link types:"},
+"context":{"message":"Contextual Menu"}
+}

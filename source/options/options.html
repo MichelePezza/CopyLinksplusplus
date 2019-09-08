@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+	<meta 	charset="utf-8">
+	<script	src="../options/options.js"></script>
+	<link	href="../options/options.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<form action="">
+		<fieldset>
+			<legend data-i18n="button"></legend>
+			<div class="control-group-big">
+				<h1 data-i18n="where"></h1>
+				<div class="select">
+					<select id="OPTwhere2copy">
+						<option value="current" data-i18n="current"></option>
+						<option value="alltabs" data-i18n="alltabs"></option>
+						<option value="alltabsallwindows" data-i18n="alltabsallwindows"></option>
+					</select>
+					<div class="select__arrow"></div>
+				</div>
+			</div>
+			<div class="control-group-big">
+				<h1 data-i18n="filter"></h1>
+				<div class="select">
+					<select id="OPTwhat2copy">
+						<option value="all" data-i18n="all"></option>
+						<option value="torrent" data-i18n="torrent"></option>
+						<option value="listed" data-i18n="listed"></option>
+						<option value="torrentlisted" data-i18n="torrentlisted"></option>
+					</select>
+					<div class="select__arrow"></div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend data-i18n="listed"></legend>
+			<div class="control-group-big">
+				<h1 data-i18n="listeddom"></h1>
+				<div>
+					<textarea id="TXTfilterlist" cols="50" rows="10" class="notes"></textarea>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend data-i18n="context"></legend>
+			<div class="control-group-big">
+				<h1 data-i18n="where"></h1>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBcurrent" type="checkbox"/>
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="current"></span>
+						</label> 
+					</div>
+				</div>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBalltabs" type="checkbox" />
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="alltabs"></span>
+						</label> 
+					</div>
+				</div>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBalltabsallwindows" type="checkbox" />
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="alltabsallwindows"></span>
+						</label> 
+					</div>
+				</div>
+			</div>
+			<div class="control-group-big">
+				<h1 data-i18n="filter"></h1>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBall" type="checkbox"/>
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="all"></span>
+						</label> 
+					</div>
+				</div>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBtorrent" type="checkbox" />
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="torrent"></span>
+						</label> 
+					</div>
+				</div>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBlisted" type="checkbox" />
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="listed"></span>
+						</label> 
+					</div>
+				</div>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol cbcontrol--checkbox">
+							<input id="CBtorrentlisted" type="checkbox" />
+							<div class="cbcontrol__indicator"></div>
+							<span class="cbspan" data-i18n="torrentlisted"></span>
+						</label> 
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</body>
+</html>
