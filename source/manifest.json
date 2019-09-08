@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_appName__",
+  "version": "1.0.1",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en_US",
+  "applications": {
+    "gecko": {
+      "id": "@copylinksplusplus",
+      "strict_min_version": "63.0"
+    }
+  },
+  
+  "icons": {
+    "48": "img/copylinks.svg",
+    "96": "img/copylinks.svg"
+  },
+
+	"permissions": [
+	"<all_urls>",
+	"activeTab",
+	"tabs",
+	"contextMenus",
+	"clipboardWrite",
+	"storage",
+	"notifications"
+	],
+	"browser_action":
+		{
+		"browser_style": true,
+		"default_icon":
+			{
+			"38": "img/copylinks.svg",
+			"19": "img/copylinks.svg"
+			},
+		"default_title": "__MSG_appButtonDesc__"
+		},
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": [ "js/content-script.js" ]
+    }
+  ],
+
+  "background": {
+    "scripts": [ "js/background.js"]
+  },
+		
+	"options_ui": {
+		"page": "options/options.html"
+	}
+}
