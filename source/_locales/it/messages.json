@@ -2,6 +2,7 @@
 "appButtonDesc":{"message":"Copylinks++"},
 "appName":{"message":"Copylinks++"},
 "appDesc":{"message":"Copia negli appunti tutti i link dalle pagine"},
+"quickAction":{"message":"Copia negli appunti tutti i link!"},
 "button":{"message":"Azione del pulsante"},
 "where":{"message":"Copia i link da:"},
 "current":{"message":"Scheda corrente"},

@@ -20,11 +20,18 @@ var allLinksArray;
 
 //***********************Current tab***********************//
 
-var copyAllLinksOnCurrentTab = (tab) => {
-    allLinksArray = [];
-    // Getting all links on current tab
-    getAllLinksOnTab(tab.id).then(
+var copyAllLinksOnCurrentTab = () => {
+    var querying = browser.tabs.query({
+            currentWindow: true,
+            active: true
+        });
+    querying.then((tabs) => {
+        var tab = tabs[0];
+        allLinksArray = [];
+        // Getting all links on current tab
+        getAllLinksOnTab(tab.id).then(
         copyLinksArrayToClipboard);
+    })
 };
 
 var getAllLinksOnTab = (tabId) => {
@@ -71,10 +78,10 @@ var copyAllLinksOnAllTabsAllWindows = () => {
     browser.tabs.query({}).then(copyAllLinksOnAllTabs);
 };
 
-var copyAllLink = (tab) => {
+var copyAllLink = () => {
     switch (OPTwhere2copy) {
     case 'current':
-        copyAllLinksOnCurrentTab(tab);
+        copyAllLinksOnCurrentTab();
         break;
     case 'alltabs':
         copyAllLinksOnAllTabsCurrentWindow();
@@ -128,8 +135,8 @@ var applyfilters = (allLinks, what) => {
     var patternBase = '^((?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:\w+\.)?(?:' + filterlistJoined + ')(?::\\d{2,5})?).*';
     //***** include only magnet ******/
     var patternMag = '^magnet:\\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}&dn=.+&tr=.+$'
-    //***** remove javascript: ******/
-    var patternAll = '^(?!javascript:.*$).*'
+        //***** remove javascript: ******/
+        var patternAll = '^(?!javascript:.*$).*'
         switch (OPTwhat2copy) {
         case 'all':
             var pattern = patternAll;
@@ -154,7 +161,8 @@ var applyfilters = (allLinks, what) => {
 };
 
 var addNodes = (url, re) => {
-    if (!url.match(re)) return false;
+    if (!url.match(re))
+        return false;
     return true;
 };
 
@@ -224,11 +232,13 @@ var createContextMenuItems = () => {
         CBcurrent = data.CBcurrent;
         CBalltabs = data.CBalltabs;
         CBalltabsallwindows = data.CBalltabsallwindows;
-		/* Button Description */
-		
-		var buttonName= browser.i18n.getMessage('appButtonDesc') + '\n' + browser.i18n.getMessage(OPTwhere2copy) + '\n' + browser.i18n.getMessage(OPTwhat2copy);
-		browser.browserAction.setTitle({title: buttonName});
-		
+        /* Button Description */
+
+        var buttonName = browser.i18n.getMessage('appButtonDesc') + '\n' + browser.i18n.getMessage(OPTwhere2copy) + '\n' + browser.i18n.getMessage(OPTwhat2copy);
+        browser.browserAction.setTitle({
+            title: buttonName
+        });
+
         var NoTab = (!CBcurrent && !CBalltabs && !CBalltabsallwindows);
         var NoLink = (!CBall && !CBtorrent && !CBlisted && !CBtorrentlisted);
         var MenuCreate = (!(NoLink || NoTab));
@@ -365,79 +375,78 @@ var createContextMenuItems = () => {
 };
 
 /* Context menu onClicked event listener */
-browser.contextMenus.onClicked.addListener((info, tab) => {
+browser.contextMenus.onClicked.addListener((info) => {
     switch (info.menuItemId) {
     case 'clpp-current-all-links':
         OPTwhere2copy = 'current';
         OPTwhat2copy = 'all';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-current-torrent':
         OPTwhere2copy = 'current';
         OPTwhat2copy = 'torrent';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-current-listed':
         OPTwhere2copy = 'current';
         OPTwhat2copy = 'listed';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-current-torrentlisted':
         OPTwhere2copy = 'current';
         OPTwhat2copy = 'torrentlisted';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabs-all-links':
         OPTwhere2copy = 'alltabs';
         OPTwhat2copy = 'all';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabs-torrent':
         OPTwhere2copy = 'alltabs';
         OPTwhat2copy = 'torrent';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabs-listed':
         OPTwhere2copy = 'alltabs';
         OPTwhat2copy = 'listed';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabs-torrentlisted':
         OPTwhere2copy = 'alltabs';
         OPTwhat2copy = 'torrentlisted';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabsallwindows-all-links':
         OPTwhere2copy = 'alltabsallwindows';
         OPTwhat2copy = 'all';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabsallwindows-torrent':
         OPTwhere2copy = 'alltabsallwindows';
         OPTwhat2copy = 'torrent';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabsallwindows-listed':
         OPTwhere2copy = 'alltabsallwindows';
         OPTwhat2copy = 'listed';
-        copyAllLink(tab);
+        copyAllLink();
         break;
     case 'clpp-alltabsallwindows-torrentlisted':
         OPTwhere2copy = 'alltabsallwindows';
         OPTwhat2copy = 'torrentlisted';
-        copyAllLink(tab);
+        copyAllLink();
         break;
 
     }
 });
 
 //****************************************************//
-//********************* Button ***********************//
+//*************** Button Action **********************//
 //****************************************************//
 
-/* Button onClicked event listener */
-browser.browserAction.onClicked.addListener((tab) => {
 
+var actionStart = () => {
     browser.storage.local.get({
         // Default Settings
         ARRfilterlist: dList,
@@ -462,15 +471,23 @@ browser.browserAction.onClicked.addListener((tab) => {
         CBtorrentlisted = data.CBtorrentlisted;
         CBcurrent = data.CBcurrent;
         CBalltabs = data.CBalltabs;
-        CBalltabsallwindows: data.CBalltabsallwindows;
-        copyAllLink(tab);
+        CBalltabsallwindows = data.CBalltabsallwindows;
+        copyAllLink();
     });
-});
+};
+
 
 var initializeAddon = () => {
     getPlatformEol();
-    createContextMenuItems();
+    reContextMenu();
     browser.storage.onChanged.addListener(reContextMenu);
+	browser.browserAction.onClicked.addListener(actionStart);
+    browser.commands.onCommand.addListener(function (command) {
+        if (command == "quickAction") {
+			console.log("ciao");
+            actionStart();
+        }
+    });
 };
 
 initializeAddon();
