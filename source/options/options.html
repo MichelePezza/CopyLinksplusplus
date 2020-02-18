@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta 	charset="utf-8">
+	<script	src="../js/common.js"></script>
 	<script	src="../options/options.js"></script>
 	<link	href="../options/options.css" rel="stylesheet" type="text/css">
 </head>
@@ -48,27 +49,17 @@
 				<h1 data-i18n="where"></h1>
 				<div class="cbcontainer">
 					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
-							<input id="CBcurrent" type="checkbox"/>
-							<div class="cbcontrol__indicator"></div>
+
+						<label class="cbcontrol">
+						    <input id="CBcurrent" type="checkbox"/>
 							<span class="cbspan" data-i18n="current"></span>
 						</label> 
-					</div>
-				</div>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
+						<label class="cbcontrol">
 							<input id="CBalltabs" type="checkbox" />
-							<div class="cbcontrol__indicator"></div>
 							<span class="cbspan" data-i18n="alltabs"></span>
 						</label> 
-					</div>
-				</div>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
+						<label class="cbcontrol">
 							<input id="CBalltabsallwindows" type="checkbox" />
-							<div class="cbcontrol__indicator"></div>
 							<span class="cbspan" data-i18n="alltabsallwindows"></span>
 						</label> 
 					</div>
@@ -78,38 +69,37 @@
 				<h1 data-i18n="filter"></h1>
 				<div class="cbcontainer">
 					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
+							<label class="cbcontrol">
 							<input id="CBall" type="checkbox"/>
-							<div class="cbcontrol__indicator"></div>
 							<span class="cbspan" data-i18n="all"></span>
 						</label> 
-					</div>
-				</div>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
+						<label class="cbcontrol">
 							<input id="CBtorrent" type="checkbox" />
-							<div class="cbcontrol__indicator"></div>
 							<span class="cbspan" data-i18n="torrent"></span>
 						</label> 
-					</div>
-				</div>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
-							<input id="CBlisted" type="checkbox" />
-							<div class="cbcontrol__indicator"></div>
+						<label class="cbcontrol">		
+					        <input id="CBlisted" type="checkbox" />						
 							<span class="cbspan" data-i18n="listed"></span>
 						</label> 
-					</div>
-				</div>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-						<label class="cbcontrol cbcontrol--checkbox">
+						<label class="cbcontrol">
 							<input id="CBtorrentlisted" type="checkbox" />
-							<div class="cbcontrol__indicator"></div>
 							<span class="cbspan" data-i18n="torrentlisted"></span>
 						</label> 
+					</div>
+				</div>
+			</div>
+			<div class="control-group-big">
+				<h1 data-i18n="adddomain"></h1>
+				<div class="cbcontainer">
+					<div class="cbcontrol-group">
+						<label class="cbcontrol">
+						<input id="CBaddsite" type="checkbox"/>
+							<span class="cbspan" data-i18n="addsite"></span>
+						</label>
+						<label class="cbcontrol">
+						<input id="CBaddlinksite" type="checkbox"/>
+							<span class="cbspan" data-i18n="addlinksite"></span>
+						</label>						
 					</div>
 				</div>
 			</div>

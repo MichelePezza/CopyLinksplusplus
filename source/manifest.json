@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.0.4",
+    "version": "1.2.0",
     "description": "__MSG_appDesc__",
     "default_locale": "en_US",
     "applications": {
@@ -45,7 +45,10 @@
     ],
 
     "background": {
-        "scripts": ["js/background.js"]
+        "scripts": [
+            "js/common.js",
+            "js/background.js"
+        ]
     },
 
     "options_ui": {

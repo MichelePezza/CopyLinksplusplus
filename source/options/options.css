@@ -15,7 +15,7 @@ fieldset{
 legend {
   font-family: sans-serif;
   font-size: 90%;
-  color: #fff;
+  color: #f0edd5;
   font-weight: bold;
   background: #000;
   padding: 0.1em 0.5em;
@@ -23,14 +23,13 @@ legend {
 }
 
 h1 {
-  font-family: 'Alegreya Sans', sans-serif;
-  font-weight: 300;
-  font-size: 18px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 16px;
   margin-top: 0;
+  margin-bottom: 0;
   text-transform: uppercase;
 }
-
-
 
 .control-group-big {
   display: block;
@@ -51,7 +50,6 @@ h1 {
   width:98%;
   border: 1px solid #969696;
   box-shadow: 4px 4px 4px rgba(0,0,0,0.75);
- 
   margin: 5px;
 }
 
@@ -63,8 +61,8 @@ h1 {
   outline: 0;
   border: 0;
   border-radius: 0;
-  background: #e6e6e6;
-  color: #7b7b7b;
+  background: #f0edd5;
+  color: #000;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -75,7 +73,7 @@ h1 {
 .select select:hover,
 .select select:focus {
   color: #000;
-  background: #ccc;
+  background: #f0edd5;
 }
 .select select:disabled {
   opacity: 0.5;
@@ -107,18 +105,17 @@ h1 {
 /* Text Area */
 
 .notes {
-  background-image: linear-gradient(#EFF2B9, #EFF2B9 23px, #ccc 23px, #ccc 23px, white 23px);
+  background-image: linear-gradient(#f0edd5, #f0edd5 23px, #ccc 23px, #ccc 23px, white 23px);
   background-size: 100% 24px;
   background-attachment: local;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   line-height: 24px;
-  font-family: Arial, Helvetica, Sans-serif;
   font-size: 16px;  
   scrollbar-width: none;
   resize: none;
-
+  color: #000;
 }
 
 textarea {
@@ -133,21 +130,21 @@ textarea {
 .cbcontainer {
   display: block;
 }
+
 .cbcontrol-group {
   display: block;
   vertical-align: top;
-  background: #fff;
+  background: #f0edd5;
   text-align: left;
   border: 1px solid #969696;
   box-shadow: 4px 4px 4px rgba(0,0,0,0.75);
   width: 98%;
   margin: 5px;
 }
+
 .cbcontrol {
   display: block;
   position: relative;
-  padding-left: 30px;
-  margin: 5px;
   cursor: pointer;
 }
 
@@ -155,66 +152,58 @@ textarea {
   font-size: 16px;
 }
 
-.cbcontrol input {
-  position: absolute;
-  z-index: -1;
-  opacity: 0;
+input[type="checkbox"] {
+  margin:10px;
+  position:relative;
+  vertical-align:middle;
+  width:75px;
+  height:25px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(0deg, #333, #000);
+  outline: none;
+  border-radius: 15px;
+  box-shadow: 0 0 0 4px #353535, 0 0 0 5px #3e3e3e, inset 0 0 10px rgba(0,0,0,1);
 }
-.cbcontrol__indicator {
-  position: absolute;
-  top: 2px;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background: #e6e6e6;
+
+input:checked[type="checkbox"] {
+  background: linear-gradient(0deg, #e67e22, #f39c12);
+  box-shadow: 0 0 0 4px #353535, 0 0 0 5px #3e3e3e, inset 0 0 10px rgba(0,0,0,1);
 }
-.cbcontrol--radio .control__indicator {
+
+
+
+input[type="checkbox"]:before {
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:50px;
+  height:25px;
+  background: linear-gradient(0deg, #000, #6b6b6b);
+  border-radius: 15px;
+  box-shadow: 0 0 0 1px #232323;
+  transform: scale(.98,.96);
+  transition:.5s;
+}
+
+input:checked[type="checkbox"]:before {
+  left:25px;
+}
+
+input[type="checkbox"]:after{
+  content:'';
+  position:absolute;
+  top:calc(50% - 2px);
+  left:43px;
+  width:4px;
+  height:4px;
+  background: linear-gradient(0deg, #6b6b6b, #000);
   border-radius: 50%;
+  transition:.5s;
 }
-.cbcontrol:hover input ~ .cbcontrol__indicator,
-.cbcontrol input:focus ~ .cbcontrol__indicator {
-  background: #ccc;
+
+input:checked[type="checkbox"]:after {
+  left:68px;
 }
-.control input:checked ~ .cbcontrol__indicator {
-  background: #2aa1c0;
-}
-.cbcontrol:hover input:not([disabled]):checked ~ .cbcontrol__indicator,
-.cbcontrol input:checked:focus ~ .cbcontrol__indicator {
-  background: #0e647d;
-}
-.cbcontrol input:disabled ~ .cbcontrol__indicator {
-  background: #e6e6e6;
-  opacity: 0.6;
-  pointer-events: none;
-}
-.cbcontrol__indicator:after {
-  content: '';
-  position: absolute;
-  display: none;
-}
-.cbcontrol input:checked ~ .cbcontrol__indicator:after {
-  display: block;
-}
-.cbcontrol--checkbox .cbcontrol__indicator:after {
-  left: 8px;
-  top: 4px;
-  width: 3px;
-  height: 8px;
-  border: solid #fff;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-.cbcontrol--checkbox input:disabled ~ .cbcontrol__indicator:after {
-  border-color: #7b7b7b;
-}
-.cbcontrol--radio .cbcontrol__indicator:after {
-  left: 7px;
-  top: 7px;
-  height: 6px;
-  width: 6px;
-  border-radius: 50%;
-  background: #fff;
-}
-.cbcontrol--radio input:disabled ~ .cbcontrol__indicator:after {
-  background: #7b7b7b;
-}
+

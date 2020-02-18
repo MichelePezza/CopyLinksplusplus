@@ -17,5 +17,9 @@
 "listeddom":{"message":"Listed Domains - one for line"},
 "torrentlisted":{"message":"Magnet and Listed Domains"},
 "filter":{"message":"Link types:"},
-"context":{"message":"Contextual Menu"}
+"context":{"message":"Contextual Menu"},
+"adddomain":{"message":"Add to listed domains"},
+"addsite":{"message":"Add current domain to list"},
+"addlinksite":{"message":"Add link domain to list"},
+"options":{"message":"Open options"}
 }
