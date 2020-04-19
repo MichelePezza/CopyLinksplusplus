@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_appName__",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "description": "__MSG_appDesc__",
     "default_locale": "en_US",
     "applications": {
@@ -35,7 +35,10 @@
     },
     "commands": {
         "quickAction": {
-            "description": "__MSG_quickAction__"
+            "description": "__MSG_quickAction__",
+            "suggested_key": {
+                "default": "Alt+Z"
+            }
         }
     },
     "content_scripts": [{
@@ -52,6 +55,8 @@
     },
 
     "options_ui": {
-        "page": "options/options.html"
+        "browser_style": true,
+        "page": "options/options.html",
+        "open_in_tab": true
     }
 }

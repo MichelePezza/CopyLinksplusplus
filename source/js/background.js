@@ -7,9 +7,9 @@ var allLinksArray;
 //**********************************************************//
 var copyAllLinksOnCurrentTab = () => {
     var querying = browser.tabs.query({
-            currentWindow: true,
-            active: true
-        });
+        currentWindow: true,
+        active: true
+    });
     querying.then((tabs) => {
         var tab = tabs[0];
         allLinksArray = [];
@@ -94,13 +94,15 @@ var copyAllLink = () => {
 //****************************************************//
 var applyfilters = (allLinks, what) => {
     var linksToListed = [];
-
-    var filterlistJoined = ARRfilterlist.join('|').replace(/\./g, '\\.').replace(/(\r\n|\n|\r)/gm, '');
     //***** include only listed domain ******/
+    var filterlistJoined = ARRfilterlist.join('|').replace(/\./g, '\\.').replace(/(\r\n|\n|\r)/gm, '');
     var patternBase = '^((?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:\w+\.)?(?:' + filterlistJoined + ')(?::\\d{2,5})?).*';
     //***** include only magnet ******/
     var patternMag = '^magnet:\\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}&dn=.+&tr=.+$'
-        //***** remove javascript: ******/
+        
+	var patternReg = ARRregexlist.join('|').replace(/(\r\n|\n|\r)/gm, '');
+		
+		//***** remove javascript: ******/
         var patternAll = '^(?!javascript:.*$).*'
         switch (OPTwhat2copy) {
         case 'all':
@@ -117,6 +119,10 @@ var applyfilters = (allLinks, what) => {
             break;
         case 'torrentlisted':
             var pattern = '(?:' + patternMag + '|' + patternBase + ')';
+            var regex = new RegExp(pattern, 'gim');
+            break;
+		case 'regex':
+            var pattern = patternReg;
             var regex = new RegExp(pattern, 'gim');
             break;
         }
@@ -163,9 +169,9 @@ var add2list = () => {
     loadSettings.then((setting) => {
         ARRfilterlist = setting.ARRfilterlist;
         let querying = browser.tabs.query({
-                currentWindow: true,
-                active: true
-            });
+            currentWindow: true,
+            active: true
+        });
 
         querying.then((tabs) => {
             let tab = tabs[0];
@@ -238,10 +244,12 @@ var createItems = () => {
         OPTwhere2copy = setting.OPTwhere2copy;
         OPTwhat2copy = setting.OPTwhat2copy;
         ARRfilterlist = setting.ARRfilterlist;
+        ARRregexlist = setting.ARRregexlist;
         CBall = setting.CBall;
         CBtorrent = setting.CBtorrent;
         CBlisted = setting.CBlisted;
         CBtorrentlisted = setting.CBtorrentlisted;
+        CBregex = setting.CBregex;
         CBcurrent = setting.CBcurrent;
         CBalltabs = setting.CBalltabs;
         CBalltabsallwindows = setting.CBalltabsallwindows;
@@ -290,6 +298,14 @@ var createItems = () => {
                     contexts: ['page']
                 });
             };
+            if (CBregex) {
+                var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('regex');
+                browser.contextMenus.create({
+                    id: 'clpp-current-regex',
+                    title: msgName,
+                    contexts: ['page']
+                });
+            };
         };
         /* Current Window */
         if (CBalltabs) {
@@ -321,6 +337,14 @@ var createItems = () => {
                 var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('torrentlisted');
                 browser.contextMenus.create({
                     id: 'clpp-alltabs-torrentlisted',
+                    title: msgName,
+                    contexts: ['page']
+                });
+            };
+            if (CBregex) {
+                var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('regex');
+                browser.contextMenus.create({
+                    id: 'clpp-alltabs-regex',
                     title: msgName,
                     contexts: ['page']
                 });
@@ -360,6 +384,15 @@ var createItems = () => {
                     contexts: ['page']
                 });
             };
+            if (CBregex) {
+                var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('regex');
+                browser.contextMenus.create({
+                    id: 'clpp-alltabsallwindows-regex',
+                    title: msgName,
+                    contexts: ['page']
+                });
+            };
+
         };
         /* Add current domain to list */
         if (CBaddsite) {
@@ -384,6 +417,10 @@ var createItems = () => {
         browser.contextMenus.create({
             id: 'clpp-options',
             title: msgName,
+            icons: {
+                16: "img/copylinks.svg",
+                32: "img/copylinks.svg"
+            },
             contexts: ["page_action", "browser_action"]
         });
 
@@ -417,6 +454,12 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
         action = false;
         copyAllLink();
         break;
+    case 'clpp-current-regex':
+        OPTwhere2copy = 'current';
+        OPTwhat2copy = 'regex';
+        action = false;
+        copyAllLink();
+        break;
     case 'clpp-alltabs-all-links':
         OPTwhere2copy = 'alltabs';
         OPTwhat2copy = 'all';
@@ -441,6 +484,12 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
         action = false;
         copyAllLink();
         break;
+    case 'clpp-alltabs-regex':
+        OPTwhere2copy = 'alltabs';
+        OPTwhat2copy = 'regex';
+        action = false;
+        copyAllLink();
+        break;
     case 'clpp-alltabsallwindows-all-links':
         OPTwhere2copy = 'alltabsallwindows';
         OPTwhat2copy = 'all';
@@ -462,6 +511,12 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
     case 'clpp-alltabsallwindows-torrentlisted':
         OPTwhere2copy = 'alltabsallwindows';
         OPTwhat2copy = 'torrentlisted';
+        action = false;
+        copyAllLink();
+        break;
+    case 'clpp-alltabsallwindows-regex':
+        OPTwhere2copy = 'alltabsallwindows';
+        OPTwhat2copy = 'regex';
         action = false;
         copyAllLink();
         break;

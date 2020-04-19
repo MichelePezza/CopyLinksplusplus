@@ -14,12 +14,19 @@
 "all":{"message":"Tutti i link"},
 "torrent":{"message":"Link Magnet"},
 "listed":{"message":"Domini in elenco"},
-"listeddom":{"message":"Un dominio per linea"},
+"domainlist":{"message":"Un dominio per linea"},
 "torrentlisted":{"message":"Link Magnet && Domini in elenco"},
 "filter":{"message":"Tipi di link:"},
 "context":{"message":"Menù contestuale"},
 "adddomain":{"message":"Aggiungi alla lista dei domini"},
 "addsite":{"message":"Aggiungi il domininio corrente alla lista"},
 "addlinksite":{"message":"Aggiungi il domininio del link alla lista"},
-"options":{"message":"Apri le impostazioni"}
+"options":{"message":"Apri le impostazioni"},
+"optionsTitle":{"message":"Copylinks++ opzioni"},
+"tabbutton":{"message":"Azione Pulsante"},
+"tabcontext":{"message":"Menù Constestuale"},
+"tabdomain":{"message":"Lista Domini"},
+"tabregex":{"message":"Lista Regex"},
+"regex":{"message":"Regular Expresion"},
+"regexlist":{"message":"Lista Regex"}
 }

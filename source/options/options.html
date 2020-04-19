@@ -1,109 +1,178 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+	<title data-i18n="optionsTitle"></title>
 	<meta 	charset="utf-8">
 	<script	src="../js/common.js"></script>
 	<script	src="../options/options.js"></script>
 	<link	href="../options/options.css" rel="stylesheet" type="text/css">
 </head>
-<body>
-	<form action="">
-		<fieldset>
-			<legend data-i18n="button"></legend>
-			<div class="control-group-big">
-				<h1 data-i18n="where"></h1>
-				<div class="select">
-					<select id="OPTwhere2copy">
-						<option value="current" data-i18n="current"></option>
-						<option value="alltabs" data-i18n="alltabs"></option>
-						<option value="alltabsallwindows" data-i18n="alltabsallwindows"></option>
-					</select>
-					<div class="select__arrow"></div>
-				</div>
-			</div>
-			<div class="control-group-big">
-				<h1 data-i18n="filter"></h1>
-				<div class="select">
-					<select id="OPTwhat2copy">
-						<option value="all" data-i18n="all"></option>
-						<option value="torrent" data-i18n="torrent"></option>
-						<option value="listed" data-i18n="listed"></option>
-						<option value="torrentlisted" data-i18n="torrentlisted"></option>
-					</select>
-					<div class="select__arrow"></div>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend data-i18n="listed"></legend>
-			<div class="control-group-big">
-				<h1 data-i18n="listeddom"></h1>
-				<div>
-					<textarea id="TXTfilterlist" cols="50" rows="10" class="notes"></textarea>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend data-i18n="context"></legend>
-			<div class="control-group-big">
-				<h1 data-i18n="where"></h1>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
 
-						<label class="cbcontrol">
-						    <input id="CBcurrent" type="checkbox"/>
-							<span class="cbspan" data-i18n="current"></span>
-						</label> 
-						<label class="cbcontrol">
-							<input id="CBalltabs" type="checkbox" />
-							<span class="cbspan" data-i18n="alltabs"></span>
-						</label> 
-						<label class="cbcontrol">
-							<input id="CBalltabsallwindows" type="checkbox" />
-							<span class="cbspan" data-i18n="alltabsallwindows"></span>
-						</label> 
-					</div>
+<body>
+	<div class="container">
+		<header class="header">
+		</header>
+		<div class="tabbed-area">
+			<div class="logo">
+				<div>
+					<img src="../img/copylinks.svg">
 				</div>
 			</div>
-			<div class="control-group-big">
-				<h1 data-i18n="filter"></h1>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-							<label class="cbcontrol">
-							<input id="CBall" type="checkbox"/>
-							<span class="cbspan" data-i18n="all"></span>
-						</label> 
-						<label class="cbcontrol">
-							<input id="CBtorrent" type="checkbox" />
-							<span class="cbspan" data-i18n="torrent"></span>
-						</label> 
-						<label class="cbcontrol">		
-					        <input id="CBlisted" type="checkbox" />						
-							<span class="cbspan" data-i18n="listed"></span>
-						</label> 
-						<label class="cbcontrol">
-							<input id="CBtorrentlisted" type="checkbox" />
-							<span class="cbspan" data-i18n="torrentlisted"></span>
-						</label> 
-					</div>
-				</div>
+
+			<!-- tab-menu -->
+			<input type="radio" class="tab-1" name="tab" checked="checked">
+			<span data-i18n="tabbutton"></span>
+
+			<input type="radio" class="tab-2"name="tab" >
+			<span data-i18n="tabcontext"></span>
+
+			<input type="radio" class="tab-3" name="tab" >
+			<span data-i18n="tablisted"></span>
+
+			<input type="radio" class="tab-4" name="tab" >
+			<span data-i18n="tabregex"></span>
+			
+            <span class="last"></span>
+			<!-- tab-top-bar -->
+			<div class="top-bar">
+				<ul>
+					<li>
+						<a href="https://github.com/MichelePezza/CopyLinksplusplus"  target="_blank" title="Github">
+							<img src="../img/github.svg">
+						</a>
+					</li>
+					<li>
+						<a href="https://addons.mozilla.org/en-US/firefox/addon/copylinksplusplus/"  target="_blank" title="AMO">
+							<img src="../img/amo.svg">
+						</a>
+					</li>
+				</ul>
 			</div>
-			<div class="control-group-big">
-				<h1 data-i18n="adddomain"></h1>
-				<div class="cbcontainer">
-					<div class="cbcontrol-group">
-						<label class="cbcontrol">
-						<input id="CBaddsite" type="checkbox"/>
-							<span class="cbspan" data-i18n="addsite"></span>
-						</label>
-						<label class="cbcontrol">
-						<input id="CBaddlinksite" type="checkbox"/>
-							<span class="cbspan" data-i18n="addlinksite"></span>
-						</label>						
-					</div>
-				</div>
+
+			<!-- tab-content -->
+			<div class="tab-content">
+				<section class="tab-item-1">
+					<fieldset class="half">
+						<legend data-i18n="button"></legend>
+						<div class="control-group-big">
+							<h1 data-i18n="where"></h1>
+							<div class="select">
+								<select id="OPTwhere2copy">
+									<option value="current" data-i18n="current"></option>
+									<option value="alltabs" data-i18n="alltabs"></option>
+									<option value="alltabsallwindows" data-i18n="alltabsallwindows"></option>
+								</select>
+								<div class="select__arrow"></div>
+							</div>
+						</div>
+						<div class="control-group-big">
+							<h1 data-i18n="filter"></h1>
+							<div class="select">
+								<select id="OPTwhat2copy">
+									<option value="all" data-i18n="all"></option>
+									<option value="torrent" data-i18n="torrent"></option>
+									<option value="listed" data-i18n="listed"></option>
+									<option value="torrentlisted" data-i18n="torrentlisted"></option>
+									<option value="regex" data-i18n="regex"></option>
+								</select>
+								<div class="select__arrow"></div>
+							</div>
+						</div>
+					</fieldset>
+				</section>
+				<section class="tab-item-2">
+					<fieldset class="half">
+						<legend data-i18n="context"></legend>
+						<div class="control-group-big">
+							<h1 data-i18n="where"></h1>
+							<div class="cbcontainer">
+								<div class="cbcontrol-group">
+									<label class="cbcontrol">
+										<input id="CBcurrent" type="checkbox"/>
+										<span class="cbspan" data-i18n="current"></span>
+									</label> 
+									<label class="cbcontrol">
+										<input id="CBalltabs" type="checkbox" />
+										<span class="cbspan" data-i18n="alltabs"></span>
+									</label> 
+									<label class="cbcontrol">
+										<input id="CBalltabsallwindows" type="checkbox" />
+										<span class="cbspan" data-i18n="alltabsallwindows"></span>
+									</label> 
+								</div>
+							</div>
+						</div>
+						<div class="control-group-big">
+							<h1 data-i18n="filter"></h1>
+							<div class="cbcontainer">
+								<div class="cbcontrol-group">
+										<label class="cbcontrol">
+										<input id="CBall" type="checkbox"/>
+										<span class="cbspan" data-i18n="all"></span>
+									</label> 
+									<label class="cbcontrol">
+										<input id="CBtorrent" type="checkbox" />
+										<span class="cbspan" data-i18n="torrent"></span>
+									</label> 
+									<label class="cbcontrol">		
+										<input id="CBlisted" type="checkbox" />
+										<span class="cbspan" data-i18n="listed"></span>
+									</label> 
+									<label class="cbcontrol">
+										<input id="CBtorrentlisted" type="checkbox" />
+										<span class="cbspan" data-i18n="torrentlisted"></span>
+									</label> 
+									<label class="cbcontrol">
+										<input id="CBregex" type="checkbox" />
+										<span class="cbspan" data-i18n="regex"></span>
+									</label> 
+								</div>
+							</div>
+						</div>
+						<div class="control-group-big">
+							<h1 data-i18n="adddomain"></h1>
+							<div class="cbcontainer">
+								<div class="cbcontrol-group">
+									<label class="cbcontrol">
+									<input id="CBaddsite" type="checkbox"/>
+										<span class="cbspan" data-i18n="addsite"></span>
+									</label>
+									<label class="cbcontrol">
+									<input id="CBaddlinksite" type="checkbox"/>
+										<span class="cbspan" data-i18n="addlinksite"></span>
+									</label>	
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					
+				</section>
+				<section class="tab-item-3">
+					<fieldset class="full">
+						<legend data-i18n="listed"></legend>
+						<div class="control-group-big">
+							<h1 data-i18n="domainlist"></h1>
+							<div>
+								<textarea id="TXTdomainlist" class="notes"></textarea>
+							</div>
+						</div>
+					</fieldset>
+				</section>
+				<section class="tab-item-4">
+					<fieldset class="full">
+						<legend data-i18n="regex"></legend>
+						<div class="control-group-big">
+							<h1 data-i18n="regexlist"></h1>
+							<div>
+								<textarea id="TXTregexlist" class="notes"></textarea>
+							</div>
+						</div>
+					</fieldset>
+				</section>
 			</div>
-		</fieldset>
-	</form>
+
+		</div>
+	</div>
+
 </body>
 </html>

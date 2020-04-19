@@ -4,10 +4,12 @@ var action = false;
 var OPTwhere2copy;
 var OPTwhat2copy;
 var ARRfilterlist;
+var ARRregexlist;
 var CBall;
 var CBtorrent;
 var CBlisted;
 var CBtorrentlisted;
+var CBregex;
 var CBcurrent;
 var CBalltabs;
 var CBalltabsallwindows;
@@ -16,17 +18,19 @@ var CBaddlinksite;
 var EOL;
 
 const dList = ['vk.com/doc', 'free.fr', 'katfile.com', 'nitroflare.com', '1fichier.com', 'clicknupload.org', 'dailyuploads.net', 'bdupload.in', 'dindishare.in', 'jheberg.net', 'filerio.in', 'go4up.com', 'hil.to', 'letsupload.co', 'mega.nz', 'megaup.net', 'mirrorace.com', 'multiup.org', 'openload.co', 'qfiles.io', 'rapidgator.net', 'sendit.cloud', 'turbo.to', 'tusfiles.com', 'uploadhaven.com', 'uptobox.com', 'userscloud.com', 'filesupload.org', 'zippyshare.com'];
-
+const rList = ["^(http|https)\\:\\/\\/[a-zA-Z0-9\\-\\.]+\\.(it)(\\/\\S*)?/"];
 async function inidef() {
     var setting = await browser.storage.local.get({
             // Default Settings
             OPTwhere2copy: 'current',
             OPTwhat2copy: 'all',
             ARRfilterlist: dList,
+            ARRregexlist: rList,
             CBall: true,
             CBtorrent: true,
             CBlisted: true,
             CBtorrentlisted: false,
+            CBregex: false,
             CBcurrent: true,
             CBalltabs: true,
             CBalltabsallwindows: false,
@@ -58,12 +62,14 @@ async function inidef() {
         CBtorrent: setting.CBtorrent,
         CBlisted: setting.CBlisted,
         CBtorrentlisted: setting.CBtorrentlisted,
+        CBregex:  setting.CBregex,
         CBcurrent: setting.CBcurrent,
         CBalltabs: setting.CBalltabs,
         CBalltabsallwindows: setting.CBalltabsallwindows,
         CBaddsite: setting.CBaddsite,
         CBaddlinksite: setting.CBaddlinksite,
         ARRfilterlist: setting.ARRfilterlist,
+        ARRregexlist: setting.ARRregexlist,
         EOL: platformEol
     }, () => {
         /* console.log('inisaved' + platformEol +'!!!'); */
