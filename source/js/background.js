@@ -1,25 +1,10 @@
 ﻿//**********************************************************//
 //***********************   START   ************************//
 //**********************************************************//
-var allLinksArray;
-//**********************************************************//
-//***********************Current tab************************//
-//**********************************************************//
-var copyAllLinksOnCurrentTab = () => {
-    var querying = browser.tabs.query({
-        currentWindow: true,
-        active: true
-    });
-    querying.then((tabs) => {
-        var tab = tabs[0];
-        allLinksArray = [];
-        // Getting all links on current tab
-        getAllLinksOnTab(tab.id).then(
-            copyLinksArrayToClipboard);
-    })
-};
 
-var getAllLinksOnTab = (tabId) => {
+//***********************Get Links**************************//
+
+var getAllLinksOnTab = async(tabId) => {
     return new Promise(
         (resolve, reject) => {
         browser.tabs.executeScript(tabId, {
@@ -33,78 +18,101 @@ var getAllLinksOnTab = (tabId) => {
         });
     });
 };
-//**********************************************************//
-//***********************All tabs***************************//
-//**********************************************************//
-var copyAllLinksOnAllTabs = tabs => {
+
+var getAllLinksOnAllTabs = async(tabs) => {
     // Creating promises array
     var promises = [];
+    var patternMoz = '^(?!(about:|moz-extension:)).*';
+    var regexMoz = new RegExp(patternMoz, 'u');
+    numTabs = 0;
+
     for (var i = 0; i < tabs.length; i++) {
-        promises.push(getAllLinksOnTab(tabs[i].id));
+        console.log("cbpinned");
+		console.log(CBexcludepinned);
+		console.log("tabpinned");
+		console.log(tabs[i].pinned);
+		console.log("testpinned");
+        console.log(!(CBexcludepinned== true && tabs[i].pinned == true));
+        console.log("match");
+        console.log(addUrls(tabs[i].url, regexMoz));
+        if (addUrls(tabs[i].url, regexMoz)) {
+            if (!(CBexcludepinned== true && tabs[i].pinned == true)) {
+                console.log("inside pinned");
+
+                console.log("inside match");
+                let prom = await getAllLinksOnTab(tabs[i].id);
+                promises.push(prom);
+                numTabs = numTabs + 1;
+            }
+        }
     }
-    // Running all the promises at the same time (not in sequential order)
-    Promise.all(promises).then(
-        copyLinksArrayToClipboard);
+    let p = await Promise.all(promises);
 };
 
-var copyAllLinksOnAllTabsCurrentWindow = () => {
-    allLinksArray = [];
-    // Getting all links on current window
-    browser.tabs.query({
+//***********************Get tab(S)************************//
+
+const getActiveTab = async() => {
+    const tab = await browser.tabs.query({
+        active: true,
         currentWindow: true
-    }).then(copyAllLinksOnAllTabs);
-};
-
-var copyAllLinksOnAllTabsAllWindows = () => {
-    allLinksArray = [];
-    // Getting all links on all windows
-    browser.tabs.query({}).then(copyAllLinksOnAllTabs);
-};
-
-var copyAllLink = () => {
-    var loadSettings = browser.storage.local.get();
-    loadSettings.then((setting) => {
-        ARRfilterlist = setting.ARRfilterlist;
-        EOL = setting.EOL;
-        if (action) {
-            OPTwhere2copy = setting.OPTwhere2copy;
-            OPTwhat2copy = setting.OPTwhat2copy;
-        }
-        switch (OPTwhere2copy) {
-        case 'current':
-            copyAllLinksOnCurrentTab();
-            break;
-        case 'alltabs':
-            copyAllLinksOnAllTabsCurrentWindow();
-            break;
-        case 'alltabsallwindows':
-            copyAllLinksOnAllTabsAllWindows();
-            break;
-        }
     });
+    return tab;
+}
+
+const getTabsActiveWindow = async() => {
+    const tabs = await browser.tabs.query({
+        currentWindow: true
+    });
+    return tabs;
 };
 
-//****************************************************//
-//********************* WHAT TO COPY *****************//
-//****************************************************//
+const getTabsAllWindows = async() => {
+    const atabs = await browser.tabs.query({});
+    return atabs;
+};
 
+//****************** Where 2 Copy links ********************//
 
-//****************************************************//
+const copyAllLinks = async(where2, what2) => {
+    allLinksArray = [];
+    var xtabs = [];
+    switch (where2) {
+    case 'current':
+        xtabs = await getActiveTab();
+        break;
+
+    case 'alltabs':
+        xtabs = await getTabsActiveWindow();
+
+        break;
+
+    case 'alltabsallwindows':
+        xtabs = await getTabsAllWindows();
+        break;
+
+    }
+
+    const tabslinks = await getAllLinksOnAllTabs(xtabs);
+    copyLinksArrayToClipboard(where2, what2);
+    console.log(xtabs);
+};
+
 //******************** APPLY FILTERS *****************//
-//****************************************************//
-var applyfilters = (allLinks, what) => {
+
+var applyfilters = (allLinks, what2) => {
     var linksToListed = [];
+
     //***** include only listed domain ******/
     var filterlistJoined = ARRfilterlist.join('|').replace(/\./g, '\\.').replace(/(\r\n|\n|\r)/gm, '');
-    var patternBase = '^((?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:\w+\.)?(?:' + filterlistJoined + ')(?::\\d{2,5})?).*';
+    var patternBase = '^((?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:\w+\.)?(?:' + filterlistJoined + ')(?:\/.*)?)';
+
     //***** include only magnet ******/
-    var patternMag = '^magnet:\\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}&dn=.+&tr=.+$'
-        
-	var patternReg = ARRregexlist.join('|').replace(/(\r\n|\n|\r)/gm, '');
-		
-		//***** remove javascript: ******/
-        var patternAll = '^(?!javascript:.*$).*'
-        switch (OPTwhat2copy) {
+    var patternMag = '^magnet:(?:.+)?(?:\\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40})(?:.+)?'
+        var patternReg = ARRregexlist.join('|').replace(/(\r\n|\n|\r)/gm, '');
+
+    //***** remove javascript: ******/
+    var patternAll = '^(?!javascript:.*$).*'
+        switch (what2) {
         case 'all':
             var pattern = patternAll;
             var regex = new RegExp(pattern, 'i');
@@ -121,404 +129,332 @@ var applyfilters = (allLinks, what) => {
             var pattern = '(?:' + patternMag + '|' + patternBase + ')';
             var regex = new RegExp(pattern, 'gim');
             break;
-		case 'regex':
+        case 'regex':
             var pattern = patternReg;
             var regex = new RegExp(pattern, 'gim');
             break;
         }
 
-        linksToListed = allLinks.filter(linkx => addNodes(linkx, regex));
+        linksToListed = allLinks.filter(linkx => addUrls(linkx, regex));
     return linksToListed;
 };
 
 // Concatenate with Platform Eol, apply filters and Copy it to clipboard
-var copyLinksArrayToClipboard = () => {
+var copyLinksArrayToClipboard = (where2, what2) => {
     // Apply filters
-    var LinksArray = applyfilters(allLinksArray, OPTwhat2copy);
-    // Remove duplicate, sorting of links.
-    const items = [...(new Set(LinksArray))].sort();
+    var LinksArray = applyfilters(allLinksArray, what2);
+    // Remove duplicate, sorting of links
+    var items = LinksArray;
 
+    if (CBdupli) {
+        items = [...(new Set(LinksArray))].sort();
+    }
     var linksText = items.join(EOL);
 
     var num = items.length;
-    var notTitle = browser.i18n.getMessage("notificationTitle") + ' - ' + browser.i18n.getMessage("Numb") + ': ' + num;
-    var notMessage = browser.i18n.getMessage(OPTwhere2copy) + '\n' + browser.i18n.getMessage(OPTwhat2copy);
+    var notiTitle = browser.i18n.getMessage("notificationTitle") + ' - ' + browser.i18n.getMessage("Numb") + ': ' + num + browser.i18n.getMessage("fromTab") + numTabs + browser.i18n.getMessage("tabs");
+    var notiMessage = browser.i18n.getMessage(where2) + '\n' + browser.i18n.getMessage(what2);
 
-    navigator.clipboard.writeText(linksText).then(copiedNotification(notTitle, notMessage));
+    navigator.clipboard.writeText(linksText).then(copiedNotification(notiTitle, notiMessage));
 };
 
 // Notification
 var copiedNotification = (tit, msg) => {
-    browser.notifications.create('onCopiedNotification', {
-        "type": "list",
-        "iconUrl": browser.extension.getURL("img/copylinks.svg"),
-        "title": tit,
-        "message": msg
-    });
-    setTimeout(function () {
-        browser.notifications.clear('onCopiedNotification');
-    }, 3000);
+
+    if (CBnoti) {
+        browser.notifications.create('onCopiedNotification', {
+            "type": "list",
+            "iconUrl": browser.runtime.getURL("img/copylinks.svg"),
+            "title": tit,
+            "message": msg
+        });
+        setTimeout(function () {
+            browser.notifications.clear('onCopiedNotification');
+        }, 3000);
+    }
 }
 
 // ADD DOMAIN
 
-var add2list = () => {
+var add2list = async() => {
 
-    var loadSettings = browser.storage.local.get();
+    const tab = await getActiveTab() || {};
 
-    loadSettings.then((setting) => {
-        ARRfilterlist = setting.ARRfilterlist;
-        let querying = browser.tabs.query({
-            currentWindow: true,
-            active: true
-        });
+    let matches = tab.url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/i);
 
-        querying.then((tabs) => {
-            let tab = tabs[0];
-            let matches = tab.url.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/i);
+    let domain = m
+        s && matches[1];
 
-            let domain = matches && matches[1];
+    let newlist = ARRfilterlist.push(domain);
 
-            let newlist = ARRfilterlist.push(domain);
+    var patternZ = '[^\s*$]+';
+    var regexZ = new RegExp(patternZ, 'g');
+    var itemslist = [...(new Set(ARRfilterlist))].sort();
+    var filtered = itemslist.filter(linkz => addUrls(linkz, regexZ));
 
-            var patternZ = '[^\s*$]+';
-            var regexZ = new RegExp(patternZ, 'g');
-            var itemslist = [...(new Set(ARRfilterlist))].sort();
-            var filtered = itemslist.filter(linkz => addNodes(linkz, regexZ));
+    var notiTitle = browser.i18n.getMessage("addsite");
+    var notiMessage = domain;
 
-            var notTitle = browser.i18n.getMessage("addsite");
-            var notMessage = domain;
-
-            browser.storage.local.set({
-                ARRfilterlist: filtered
-            }, () => {
-                copiedNotification(notTitle, notMessage);
-            });
-        });
+    browser.storage.local.set({
+        ARRfilterlist: filtered
+    }, () => {
+        copiedNotification(notiTitle, notiMessage);
     });
+
 };
 
-var addlink2list = (dlink) => {
+var addlink2list = async(dlink) => {
 
-    var loadSettings = browser.storage.local.get();
-    loadSettings.then((setting) => {
-        ARRfilterlist = setting.ARRfilterlist;
+    let matches = dlink.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/i);
 
-        let matches = dlink.match(/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/i);
+    let domain = matches && matches[1];
 
-        let domain = matches && matches[1];
+    let newlist = ARRfilterlist.push(domain);
 
-        let newlist = ARRfilterlist.push(domain);
+    var patternZ = '[^\s*$]+';
+    var regexZ = new RegExp(patternZ, 'g');
+    var itemslist = [...(new Set(ARRfilterlist))].sort();
+    var filtered = itemslist.filter(linkz => addUrls(linkz, regexZ));
 
-        var patternZ = '[^\s*$]+';
-        var regexZ = new RegExp(patternZ, 'g');
-        var itemslist = [...(new Set(ARRfilterlist))].sort();
-        var filtered = itemslist.filter(linkz => addNodes(linkz, regexZ));
+    var notiTitle = browser.i18n.getMessage("addlinksite");
+    var notiMessage = domain;
 
-        var notTitle = browser.i18n.getMessage("addlinksite");
-        var notMessage = domain;
-
-        browser.storage.local.set({
-            ARRfilterlist: filtered
-        }, () => {
-            copiedNotification(notTitle, notMessage);
-        });
+    browser.storage.local.set({
+        ARRfilterlist: filtered
+    }, () => {
+        copiedNotification(notiTitle, notiMessage);
     });
 };
 
 //****************************************************//
-//*****Create Contextual Menu & Button Desc***********//
+//*****Create Conptabs Menu & Button Desc***********//
 //****************************************************//
 
 
-var reContextMenu = () => {
+var reContextMenu = async() => {
+    let variables = await setVar();
     /*console.log("recontext");*/
     browser.contextMenus.removeAll(createItems);
 };
 
-var createItems = () => {
+var createItems = async() => {
 
-    var loadSettings = browser.storage.local.get();
+    /* Button Description */
+    var buttonName = browser.i18n.getMessage('appButtonDesc') + '\n' + browser.i18n.getMessage(OPTwhere2copy) + '\n' + browser.i18n.getMessage(OPTwhat2copy);
+    browser.browserAction.setTitle({
+        title: buttonName
+    });
 
-    loadSettings.then((setting) => {
-        OPTwhere2copy = setting.OPTwhere2copy;
-        OPTwhat2copy = setting.OPTwhat2copy;
-        ARRfilterlist = setting.ARRfilterlist;
-        ARRregexlist = setting.ARRregexlist;
-        CBall = setting.CBall;
-        CBtorrent = setting.CBtorrent;
-        CBlisted = setting.CBlisted;
-        CBtorrentlisted = setting.CBtorrentlisted;
-        CBregex = setting.CBregex;
-        CBcurrent = setting.CBcurrent;
-        CBalltabs = setting.CBalltabs;
-        CBalltabsallwindows = setting.CBalltabsallwindows;
-        CBaddsite = setting.CBaddsite;
-        CBaddlinksite = setting.CBaddlinksite;
-        EOL = setting.EOL;
-
-        /* Button Description */
-        var buttonName = browser.i18n.getMessage('appButtonDesc') + '\n' + browser.i18n.getMessage(OPTwhere2copy) + '\n' + browser.i18n.getMessage(OPTwhat2copy);
-        browser.browserAction.setTitle({
-            title: buttonName
-        });
-
-        /* Current Tab */
-        /* console.log('creation'); */
-        if (CBcurrent) {
-            if (CBall) {
-                var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('all');
-                browser.contextMenus.create({
-                    id: 'clpp-current-all-links',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBtorrent) {
-                var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('torrent');
-                browser.contextMenus.create({
-                    id: 'clpp-current-torrent',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBlisted) {
-                var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('listed');
-                browser.contextMenus.create({
-                    id: 'clpp-current-listed',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBtorrentlisted) {
-                var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('torrentlisted');
-                browser.contextMenus.create({
-                    id: 'clpp-current-torrentlisted',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBregex) {
-                var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('regex');
-                browser.contextMenus.create({
-                    id: 'clpp-current-regex',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-        };
-        /* Current Window */
-        if (CBalltabs) {
-            if (CBall) {
-                var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('all');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabs-all-links',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBtorrent) {
-                var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('torrent');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabs-torrent',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBlisted) {
-                var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('listed');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabs-listed',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBtorrentlisted) {
-                var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('torrentlisted');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabs-torrentlisted',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBregex) {
-                var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('regex');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabs-regex',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-        };
-        /* All Windows */
-        if (CBalltabsallwindows) {
-            if (CBall) {
-                var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('all');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabsallwindows-all-links',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBtorrent) {
-                var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('torrent');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabsallwindows-torrent',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBlisted) {
-                var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('listed');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabsallwindows-listed',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBtorrentlisted) {
-                var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('torrentlisted');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabsallwindows-torrentlisted',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-            if (CBregex) {
-                var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('regex');
-                browser.contextMenus.create({
-                    id: 'clpp-alltabsallwindows-regex',
-                    title: msgName,
-                    contexts: ['page']
-                });
-            };
-
-        };
-        /* Add current domain to list */
-        if (CBaddsite) {
-            var msgName = browser.i18n.getMessage('addsite');
+    /* Current Tab */
+    /* console.log('creation'); */
+    if (CBcurrent) {
+        if (CBall) {
+            var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('all');
             browser.contextMenus.create({
-                id: 'clpp-addsite',
+                id: 'clpp-current-all-links',
                 title: msgName,
                 contexts: ['page']
             });
         };
-        /* Add link domain to list */
-        if (CBaddlinksite) {
-            var msgName = browser.i18n.getMessage('addlinksite');
+        if (CBtorrent) {
+            var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('torrent');
             browser.contextMenus.create({
-                id: 'clpp-addlinksite',
+                id: 'clpp-current-torrent',
                 title: msgName,
-                contexts: ['link']
+                contexts: ['page']
             });
         };
-        /* Option */
-        var msgName = browser.i18n.getMessage('options');
-        browser.contextMenus.create({
-            id: 'clpp-options',
-            title: msgName,
-            icons: {
-                16: "img/copylinks.svg",
-                32: "img/copylinks.svg"
-            },
-            contexts: ["page_action", "browser_action"]
-        });
+        if (CBlisted) {
+            var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('listed');
+            browser.contextMenus.create({
+                id: 'clpp-current-listed',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBtorrentlisted) {
+            var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('torrentlisted');
+            browser.contextMenus.create({
+                id: 'clpp-current-torrentlisted',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBregex) {
+            var msgName = browser.i18n.getMessage('current') + ' - ' + browser.i18n.getMessage('regex');
+            browser.contextMenus.create({
+                id: 'clpp-current-regex',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+    };
+    /* Current Window */
+    if (CBalltabs) {
+        if (CBall) {
+            var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('all');
+            browser.contextMenus.create({
+                id: 'clpp-alltabs-all-links',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBtorrent) {
+            var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('torrent');
+            browser.contextMenus.create({
+                id: 'clpp-alltabs-torrent',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBlisted) {
+            var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('listed');
+            browser.contextMenus.create({
+                id: 'clpp-alltabs-listed',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBtorrentlisted) {
+            var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('torrentlisted');
+            browser.contextMenus.create({
+                id: 'clpp-alltabs-torrentlisted',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBregex) {
+            var msgName = browser.i18n.getMessage('alltabs') + ' - ' + browser.i18n.getMessage('regex');
+            browser.contextMenus.create({
+                id: 'clpp-alltabs-regex',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+    };
+    /* All Windows */
+    if (CBalltabsallwindows) {
+        if (CBall) {
+            var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('all');
+            browser.contextMenus.create({
+                id: 'clpp-alltabsallwindows-all-links',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBtorrent) {
+            var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('torrent');
+            browser.contextMenus.create({
+                id: 'clpp-alltabsallwindows-torrent',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBlisted) {
+            var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('listed');
+            browser.contextMenus.create({
+                id: 'clpp-alltabsallwindows-listed',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBtorrentlisted) {
+            var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('torrentlisted');
+            browser.contextMenus.create({
+                id: 'clpp-alltabsallwindows-torrentlisted',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
+        if (CBregex) {
+            var msgName = browser.i18n.getMessage('alltabsallwindows') + ' - ' + browser.i18n.getMessage('regex');
+            browser.contextMenus.create({
+                id: 'clpp-alltabsallwindows-regex',
+                title: msgName,
+                contexts: ['page']
+            });
+        };
 
+    };
+    /* Add current domain to list */
+    if (CBaddsite) {
+        var msgName = browser.i18n.getMessage('addsite');
+        browser.contextMenus.create({
+            id: 'clpp-addsite',
+            title: msgName,
+            contexts: ['page']
+        });
+    };
+    /* Add link domain to list */
+    if (CBaddlinksite) {
+        var msgName = browser.i18n.getMessage('addlinksite');
+        browser.contextMenus.create({
+            id: 'clpp-addlinksite',
+            title: msgName,
+            contexts: ['link']
+        });
+    };
+    /* Option */
+    var msgName = browser.i18n.getMessage('options');
+    browser.contextMenus.create({
+        id: 'clpp-options',
+        title: msgName,
+        icons: {
+            16: "img/copylinks.svg",
+            32: "img/copylinks.svg"
+        },
+        contexts: ["page_action", "browser_action"]
     });
+
 };
 
 /* Context menu onClicked event listener */
 browser.contextMenus.onClicked.addListener((info, tab) => {
     switch (info.menuItemId) {
     case 'clpp-current-all-links':
-        OPTwhere2copy = 'current';
-        OPTwhat2copy = 'all';
-        action = false;
-        copyAllLink();
+        copyAllLinks('current', 'all');
         break;
     case 'clpp-current-torrent':
-        OPTwhere2copy = 'current';
-        OPTwhat2copy = 'torrent';
-        action = false;
-        copyAllLink();
+        copyAllLinks('current', 'torrent');
         break;
     case 'clpp-current-listed':
-        OPTwhere2copy = 'current';
-        OPTwhat2copy = 'listed';
-        action = false;
-        copyAllLink();
+        copyAllLinks('current', 'listed');
         break;
     case 'clpp-current-torrentlisted':
-        OPTwhere2copy = 'current';
-        OPTwhat2copy = 'torrentlisted';
-        action = false;
-        copyAllLink();
+        copyAllLinks('current', 'torrentlisted');
         break;
     case 'clpp-current-regex':
-        OPTwhere2copy = 'current';
-        OPTwhat2copy = 'regex';
-        action = false;
-        copyAllLink();
+        copyAllLinks('current', 'regex');
         break;
     case 'clpp-alltabs-all-links':
-        OPTwhere2copy = 'alltabs';
-        OPTwhat2copy = 'all';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabs', 'all');
         break;
     case 'clpp-alltabs-torrent':
-        OPTwhere2copy = 'alltabs';
-        OPTwhat2copy = 'torrent';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabs', 'torrent');
         break;
     case 'clpp-alltabs-listed':
-        OPTwhere2copy = 'alltabs';
-        OPTwhat2copy = 'listed';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabs', 'listed');
         break;
     case 'clpp-alltabs-torrentlisted':
-        OPTwhere2copy = 'alltabs';
-        OPTwhat2copy = 'torrentlisted';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabs', 'torrentlisted');
         break;
     case 'clpp-alltabs-regex':
-        OPTwhere2copy = 'alltabs';
-        OPTwhat2copy = 'regex';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabs', 'regex');
         break;
     case 'clpp-alltabsallwindows-all-links':
-        OPTwhere2copy = 'alltabsallwindows';
-        OPTwhat2copy = 'all';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabsallwindows', 'all');
         break;
     case 'clpp-alltabsallwindows-torrent':
-        OPTwhere2copy = 'alltabsallwindows';
-        OPTwhat2copy = 'torrent';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabsallwindows', 'torrent');
         break;
     case 'clpp-alltabsallwindows-listed':
-        OPTwhere2copy = 'alltabsallwindows';
-        OPTwhat2copy = 'listed';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabsallwindows', 'listed');
         break;
     case 'clpp-alltabsallwindows-torrentlisted':
-        OPTwhere2copy = 'alltabsallwindows';
-        OPTwhat2copy = 'torrentlisted';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabsallwindows', 'torrentlisted');
         break;
     case 'clpp-alltabsallwindows-regex':
-        OPTwhere2copy = 'alltabsallwindows';
-        OPTwhat2copy = 'regex';
-        action = false;
-        copyAllLink();
+        copyAllLinks('alltabsallwindows', 'regex');
         break;
     case 'clpp-addsite':
         add2list();
@@ -538,14 +474,13 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 
 
 var actionStart = () => {
-    action = true;
-    copyAllLink();
+    copyAllLinks(OPTwhere2copy, OPTwhat2copy);
 };
 
-var initializeAddon = () => {
+var initializeAddon = async() => {
 
-    inidef();
-    reContextMenu();
+    let init = await inidef();
+    let reContext = await reContextMenu();
     browser.storage.onChanged.addListener(reContextMenu);
     browser.browserAction.onClicked.addListener(actionStart);
     browser.commands.onCommand.addListener(function (command) {

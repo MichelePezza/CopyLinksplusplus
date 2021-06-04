@@ -46,15 +46,22 @@ window.onload = () => {
 	document.getElementById('TXTregexlist').onchange = () => {
 		saveSettings();
     };
+	document.getElementById('CBdupli').onchange = () => {
+		saveSettings();
+    };
+	document.getElementById('CBexcludepinned').onchange = () => {
+		saveSettings();
+    };
+	document.getElementById('CBnoti').onchange = () => {
+		saveSettings();
+    };
     browser.storage.onChanged.addListener(updateUI);
     // Localization
     localization();
 }
 // Load Settings
-var updateUI = () => {
-    var loadSettings = browser.storage.local.get();
-
-    loadSettings.then((setting) => {
+var updateUI = async () => {
+    const setting = await getSetting();
         // Eol
         var EOL = setting.EOL;
 
@@ -73,7 +80,10 @@ var updateUI = () => {
 		document.getElementById('CBaddlinksite').checked = setting.CBaddlinksite;
         document.getElementById('TXTdomainlist').value = setting.ARRfilterlist.join(EOL);
 		document.getElementById('TXTregexlist').value = setting.ARRregexlist.join(EOL);
-    });
+		document.getElementById('CBdupli').checked = setting.CBdupli;
+		document.getElementById('CBexcludepinned').checked = setting.CBexcludepinned;
+		document.getElementById('CBnoti').checked = setting.CBnoti;
+    
 };
 // Save Settings
 var saveSettings = () => {
@@ -85,10 +95,10 @@ var saveSettings = () => {
 	var regexZ = new RegExp(patternZ, 'g');
 	
 	var domitems = [...(new Set(domlist))].sort();
-    var domfiltered = domitems.filter(linkz => addNodes(linkz, regexZ));
+    var domfiltered = domitems.filter(linkz => addUrls(linkz, regexZ));
 	
 	var regitems = [...(new Set(reglist))].sort();
-    var regfiltered = regitems.filter(regz => addNodes(regz, regexZ));
+    var regfiltered = regitems.filter(regz => addUrls(regz, regexZ));
 
 
     browser.storage.local.set({
@@ -104,6 +114,9 @@ var saveSettings = () => {
         CBalltabsallwindows: document.getElementById('CBalltabsallwindows').checked,
         CBaddsite: document.getElementById('CBaddsite').checked,
 		CBaddlinksite: document.getElementById('CBaddlinksite').checked,
+		CBdupli: document.getElementById('CBdupli').checked,
+		CBexcludepinned: document.getElementById('CBexcludepinned').checked,
+		CBnoti: document.getElementById('CBnoti').checked,
         ARRfilterlist: domfiltered,
 		ARRregexlist: regfiltered
     }, () => {

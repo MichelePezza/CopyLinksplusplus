@@ -7,7 +7,7 @@ background: #ffffff;
 
 body {
 	width: 1200px;
-	background: #f7f1e6;
+	background: #f0f0f0;
 	font-family: sans-serif;
 	font-size: 14px;
 	height: calc(100% - 2px);
@@ -26,14 +26,14 @@ body {
 /* Tabbed Area */
 
 .tabbed-area {
-	background: #f7f1e6;
+	background: #f0f0f0;
 	width: 100%;
 	height:  100%; 
 	position: relative;
 }
 
 .logo {
-	background: #f39c12;
+	background: #bebebe;
 	width: 160px;
 	height: 160px;
 }
@@ -42,7 +42,7 @@ body {
 	width: 130px;
 	height: 130px;
 	border-radius: 50%;
-	background: #f7f1e6;
+	background: #f0f0f0;
 	overflow: hidden;
 	position: relative;
 	top: 15px;
@@ -79,7 +79,7 @@ body {
 
 .tabbed-area > input:hover + span,
 .tabbed-area > input:checked + span {
-	background: #f7f1e6;
+	background: #f0f0f0;
 	color:#c70007;
 }
 .tabbed-area > input:checked + span + i {
@@ -100,7 +100,7 @@ body {
 
 .tabbed-area > input,
 .tabbed-area > span {
-	background: #f39c12;
+	background: #bebebe;
 	display: block;
 	width: 160px;
 	height: 60px;
@@ -115,7 +115,7 @@ body {
 
 
 .top-bar {
-	background: #f39c12;
+	background: #bebebe;
 	color: #000;
 	position: absolute;
 	top: 0;
@@ -141,7 +141,7 @@ body {
 }
 
 .top-bar li:hover {
-	background: #f7f1e6;
+	background: #f0f0f0;
 }
 .top-bar a img {
 	width: 32px;
@@ -165,6 +165,10 @@ body {
 	padding: 10px;
 	display: none;
 	overflow: visible;
+}
+
+.tabbed-area > input.tab-0:checked ~ .tab-content .tab-item-0 {
+	display: block;
 }
 
 .tabbed-area > input.tab-1:checked ~ .tab-content .tab-item-1 {
@@ -193,7 +197,7 @@ body {
 
 .full{
   margin: 8px 10px 8px 10px;
-  padding: 0px 10px 0px 10px
+  padding: 0px 10px 0px 10px;
   width: calc(100% - 40px);
 }
 
@@ -202,7 +206,7 @@ legend {
   margin: 2px 8px 2px 8px;
   font-family: sans-serif;
   font-size: 90%;
-  color: #f0edd5;
+  color: #e5e5e5;
   font-weight: bold;
   background: #000;
   padding: 0.2em 0.5em;
@@ -250,7 +254,7 @@ h1 {
   outline: 0;
   border: 0;
   border-radius: 0;
-  background: #f0edd5;
+  background: #e5e5e5;
   color: #000;
   appearance: none;
   -moz-appearance: none;
@@ -262,7 +266,7 @@ h1 {
 .select select:hover,
 .select select:focus {
   color: #000;
-  background: #f0edd5;
+  background: #e5e5e5;
 }
 .select select:disabled {
   opacity: 0.5;
@@ -295,7 +299,7 @@ h1 {
 /* Text Area */
 
 .notes {
-  background-image: linear-gradient(#f0edd5, #f0edd5 23px, #ccc 23px, #ccc 23px, white 23px);
+  background-image: linear-gradient(#e5e5e5, #e5e5e5 23px, #ccc 23px, #ccc 23px, white 23px);
   background-size: 100% 24px;
   background-attachment: local;
   border: 1px solid #ccc;
@@ -326,7 +330,7 @@ textarea {
 .cbcontrol-group {
   display: block;
   vertical-align: top;
-  background: #f0edd5;
+  background: #e5e5e5;
   text-align: left;
   border: 1px solid #969696;
   box-shadow: 4px 4px 4px rgba(0,0,0,0.75);
@@ -352,14 +356,14 @@ input[type="checkbox"] {
   width:60px;
   height:20px;
   -moz-appearance: none;
-  background: linear-gradient(0deg, #333, #000);
+  background: linear-gradient(0deg, #ed1d0c, #fd5143);
   outline: none;
   border-radius: 15px;
   box-shadow: 0 0 0 4px #353535, 0 0 0 5px #3e3e3e, inset 0 0 10px rgba(0,0,0,1);
 }
 
 input:checked[type="checkbox"] {
-  background: linear-gradient(0deg, #e67e22, #f39c12);
+  background: linear-gradient(0deg,  #b6f7a6 , #bebebe);
   box-shadow: 0 0 0 4px #353535, 0 0 0 5px #3e3e3e, inset 0 0 10px rgba(0,0,0,1);
 }
 

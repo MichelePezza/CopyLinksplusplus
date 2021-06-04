@@ -1,6 +1,16 @@
 //*********************** VARIABLES ***********************//
 
-var action = false;
+var allLinksArray = [];
+var bbtt;
+
+var url = '';
+var re;
+
+var numTabs = 0;
+var where2copy;
+var what2copy;
+
+///**** SETTING VARIABLES *****///
 var OPTwhere2copy;
 var OPTwhat2copy;
 var ARRfilterlist;
@@ -15,30 +25,64 @@ var CBalltabs;
 var CBalltabsallwindows;
 var CBaddsite;
 var CBaddlinksite;
+var CBexcludepinned;
+var CBdupli;
+var CBnoti;
 var EOL;
+///**** END SETTINGS*****///
 
 const dList = ['vk.com/doc', 'free.fr', 'katfile.com', 'nitroflare.com', '1fichier.com', 'clicknupload.org', 'dailyuploads.net', 'bdupload.in', 'dindishare.in', 'jheberg.net', 'filerio.in', 'go4up.com', 'hil.to', 'letsupload.co', 'mega.nz', 'megaup.net', 'mirrorace.com', 'multiup.org', 'openload.co', 'qfiles.io', 'rapidgator.net', 'sendit.cloud', 'turbo.to', 'tusfiles.com', 'uploadhaven.com', 'uptobox.com', 'userscloud.com', 'filesupload.org', 'zippyshare.com'];
 const rList = ["^(http|https)\\:\\/\\/[a-zA-Z0-9\\-\\.]+\\.(it)(\\/\\S*)?/"];
-async function inidef() {
-    var setting = await browser.storage.local.get({
-            // Default Settings
-            OPTwhere2copy: 'current',
-            OPTwhat2copy: 'all',
-            ARRfilterlist: dList,
-            ARRregexlist: rList,
-            CBall: true,
-            CBtorrent: true,
-            CBlisted: true,
-            CBtorrentlisted: false,
-            CBregex: false,
-            CBcurrent: true,
-            CBalltabs: true,
-            CBalltabsallwindows: false,
-            CBaddsite: true,
-            CBaddlinksite: true,
-            EOL: '\n'
-        });
-    var info = await browser.runtime.getPlatformInfo();
+
+const getSetting = async() => {
+    const dsetting = await browser.storage.local.get({
+        // Default Settings
+        OPTwhere2copy: 'current',
+        OPTwhat2copy: 'all',
+        ARRfilterlist: dList,
+        ARRregexlist: rList,
+        CBall: true,
+        CBtorrent: true,
+        CBlisted: true,
+        CBtorrentlisted: false,
+        CBregex: false,
+        CBcurrent: true,
+        CBalltabs: true,
+        CBalltabsallwindows: false,
+        CBaddsite: true,
+        CBaddlinksite: true,
+        CBdupli: true,
+        CBexcludepinned: true,
+        CBnoti: true,
+        EOL: '\n'
+    });
+    return dsetting;
+}
+
+const setVar = async() => {
+    const setting = await getSetting();
+    OPTwhere2copy = setting.OPTwhere2copy;
+    OPTwhat2copy = setting.OPTwhat2copy;
+    ARRfilterlist = setting.ARRfilterlist;
+    ARRregexlist = setting.ARRregexlist;
+    CBall = setting.CBall;
+    CBtorrent = setting.CBtorrent;
+    CBlisted = setting.CBlisted;
+    CBtorrentlisted = setting.CBtorrentlisted;
+    CBregex = setting.CBregex;
+    CBcurrent = setting.CBcurrent;
+    CBalltabs = setting.CBalltabs;
+    CBalltabsallwindows = setting.CBalltabsallwindows;
+    CBaddsite = setting.CBaddsite;
+    CBaddlinksite = setting.CBaddlinksite;
+    CBdupli = setting.CBdupli;
+    CBexcludepinned = setting.CBexcludepinned;
+    CBnoti = setting.CBnoti;
+    EOL = setting.EOL;
+}
+
+const getEol = async() => {
+    const info = await browser.runtime.getPlatformInfo();
     var os = info.os;
     var platformEol;
     switch (os) {
@@ -55,6 +99,13 @@ async function inidef() {
         platformEol = '\n';
         break;
     };
+    return platformEol;
+}
+
+const inidef = async() => {
+    const setting = await getSetting();
+    const myVar = await setVar();
+    const osEol = await getEol();
     browser.storage.local.set({
         OPTwhere2copy: setting.OPTwhere2copy,
         OPTwhat2copy: setting.OPTwhat2copy,
@@ -62,23 +113,26 @@ async function inidef() {
         CBtorrent: setting.CBtorrent,
         CBlisted: setting.CBlisted,
         CBtorrentlisted: setting.CBtorrentlisted,
-        CBregex:  setting.CBregex,
+        CBregex: setting.CBregex,
         CBcurrent: setting.CBcurrent,
         CBalltabs: setting.CBalltabs,
         CBalltabsallwindows: setting.CBalltabsallwindows,
         CBaddsite: setting.CBaddsite,
         CBaddlinksite: setting.CBaddlinksite,
+        CBexcludepinned: setting.CBexcludepinned,
+        CBdupli: setting.CBdupli,
+        CBnoti: setting.CBnoti,
         ARRfilterlist: setting.ARRfilterlist,
         ARRregexlist: setting.ARRregexlist,
-        EOL: platformEol
+        EOL: osEol
     }, () => {
         /* console.log('inisaved' + platformEol +'!!!'); */
     });
 };
 
-// matche regex
+// match regex
 
-var addNodes = (url, re) => {
+var addUrls = (url, re) => {
     if (!url.match(re))
         return false;
     return true;

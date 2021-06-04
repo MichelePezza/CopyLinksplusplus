@@ -20,17 +20,21 @@
 			</div>
 
 			<!-- tab-menu -->
-			<input type="radio" class="tab-1" name="tab" checked="checked">
-			<span data-i18n="tabbutton"></span>
+			
+			<input type="radio" class="tab-0" name="tab" checked="checked">
+			<span data-i18n="tab_button"></span>
 
-			<input type="radio" class="tab-2"name="tab" >
-			<span data-i18n="tabcontext"></span>
+			<input type="radio" class="tab-1"name="tab">
+			<span data-i18n="tab_context"></span>
 
-			<input type="radio" class="tab-3" name="tab" >
-			<span data-i18n="tablisted"></span>
+			<input type="radio" class="tab-2" name="tab">
+			<span data-i18n="tab_listed"></span>
 
-			<input type="radio" class="tab-4" name="tab" >
-			<span data-i18n="tabregex"></span>
+			<input type="radio" class="tab-3" name="tab">
+			<span data-i18n="tab_regex"></span>
+			
+			<input type="radio" class="tab-4" name="tab">
+			<span data-i18n="tab_general"></span>
 			
             <span class="last"></span>
 			<!-- tab-top-bar -->
@@ -51,7 +55,7 @@
 
 			<!-- tab-content -->
 			<div class="tab-content">
-				<section class="tab-item-1">
+				<section class="tab-item-0">
 					<fieldset class="half">
 						<legend data-i18n="button"></legend>
 						<div class="control-group-big">
@@ -80,7 +84,7 @@
 						</div>
 					</fieldset>
 				</section>
-				<section class="tab-item-2">
+				<section class="tab-item-1">
 					<fieldset class="half">
 						<legend data-i18n="context"></legend>
 						<div class="control-group-big">
@@ -147,7 +151,7 @@
 					</fieldset>
 					
 				</section>
-				<section class="tab-item-3">
+				<section class="tab-item-2">
 					<fieldset class="full">
 						<legend data-i18n="listed"></legend>
 						<div class="control-group-big">
@@ -158,7 +162,7 @@
 						</div>
 					</fieldset>
 				</section>
-				<section class="tab-item-4">
+				<section class="tab-item-3">
 					<fieldset class="full">
 						<legend data-i18n="regex"></legend>
 						<div class="control-group-big">
@@ -169,6 +173,51 @@
 						</div>
 					</fieldset>
 				</section>
+				<section class="tab-item-4">
+					<fieldset class="half">
+						<legend data-i18n="excludepinnedT"></legend>
+							<div class="control-group-big">
+							<h1 data-i18n="excludepinned"></h1>
+							<div class="cbcontainer">
+								<div class="cbcontrol-group">
+									<label class="cbcontrol">
+									<input id="CBexcludepinned" type="checkbox"/>
+										<span class="cbspan" data-i18n="excludepinned"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="half">
+						<legend data-i18n="dupliT"></legend>
+							<div class="control-group-big">
+							<h1 data-i18n="dupli"></h1>
+							<div class="cbcontainer">
+								<div class="cbcontrol-group">
+									<label class="cbcontrol">
+									<input id="CBdupli" type="checkbox"/>
+										<span class="cbspan" data-i18n="dupli"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="half">
+					<legend data-i18n="notiT"></legend>
+							<div class="control-group-big">
+							<h1 data-i18n="noti"></h1>
+							<div class="cbcontainer">
+								<div class="cbcontrol-group">
+									<label class="cbcontrol">
+									<input id="CBnoti" type="checkbox"/>
+										<span class="cbspan" data-i18n="noti"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</section>
+
 			</div>
 
 		</div>

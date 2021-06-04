@@ -1,7 +1,7 @@
 {
-"appButtonDesc":{"message":"Copylinks++"},
 "appName":{"message":"Copylinks++"},
 "appDesc":{"message":"Copia negli appunti tutti i link dalle pagine"},
+"appButtonDesc":{"message":"Copylinks++"},
 "quickAction":{"message":"Copia negli appunti tutti i link!"},
 "button":{"message":"Azione del pulsante"},
 "where":{"message":"Copia i link da:"},
@@ -11,6 +11,8 @@
 "notificationTitle":{"message":"Copylinks++"},
 "notificationMessage":{"message":"Numero"},
 "numb":{"message":"Link copiati"},
+"fromTab": {"message":" da n. "},
+"tabs": {"message":" scheda/e"},
 "all":{"message":"Tutti i link"},
 "torrent":{"message":"Link Magnet"},
 "listed":{"message":"Domini in elenco"},
@@ -27,6 +29,13 @@
 "tabcontext":{"message":"Menù Constestuale"},
 "tabdomain":{"message":"Lista Domini"},
 "tabregex":{"message":"Lista Regex"},
-"regex":{"message":"Regular Expresion"},
-"regexlist":{"message":"Lista Regex"}
+"regex":{"message":"Regular Expression"},
+"regexlist":{"message":"Una Regex per linea"},
+"general":{"message":"Generali"},
+"excludepinnedT":{"message":"Schede"},
+"excludepinned":{"message":"Escludi le schede bloccate"},
+"dupliT":{"message":"Link"},
+"dupli":{"message":"Ordina link e rimuovi duplicati"},
+"noti":{"message":"Notifiche abilitate"},
+"notiT":{"message":"Notifiche"}
 }
