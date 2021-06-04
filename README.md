@@ -1,4 +1,4 @@
-# CopyLinks++
+# CopyLinks PlusPlus
 
 Copylinks++ extracts all links from all opened tabs, sorts them, removes duplicates, and copies them to clipboard.
 
